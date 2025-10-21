@@ -9,9 +9,12 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /app
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
+# before: default-mysql-client gcc
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    pkg-config \
+    default-libmysqlclient-dev \
     default-mysql-client \
-    gcc \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
