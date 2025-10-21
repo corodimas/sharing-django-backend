@@ -33,7 +33,11 @@ wait_for_db() {
     log_info "Waiting for MySQL at $DB_HOST:$DB_PORT..."
     
     while [ $retries -lt "$DB_MAX_RETRIES" ]; do
-        if mysqladmin ping -h "$DB_HOST" -P "$DB_PORT" --ssl-mode=DISABLED --silent >/dev/null 2>&1; then
+        if mysqladmin ping -h "$DB_HOST" -P "$DB_PORT" \
+            --ssl-mode=DISABLED \
+            -u "$DB_USER" \
+            -p"$DB_PASSWORD" \
+            --silent >/dev/null 2>&1; then
             log_info "MySQL is ready!"
             return 0
         fi
