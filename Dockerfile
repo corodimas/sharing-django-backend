@@ -22,12 +22,14 @@ COPY requirements.txt /app/
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt
 
+# Copy entrypoint script with execute permissions
+COPY --chmod=755 entrypoint.sh /app/entrypoint.sh
+
 # Copy project
 COPY . /app/
 
-# Fix line endings and make entrypoint executable
-RUN dos2unix /app/entrypoint.sh 2>/dev/null || sed -i 's/\r$//' /app/entrypoint.sh && \
-    chmod +x /app/entrypoint.sh
+# Fix line endings in entrypoint
+RUN sed -i 's/\r$//' /app/entrypoint.sh
 
 # Expose port
 EXPOSE 8000
